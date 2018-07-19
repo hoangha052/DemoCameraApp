@@ -1,0 +1,29 @@
+{
+  "name": "Camera",
+  "version": "0.0.1",
+  "summary": "Camera Tool",
+  "description": "Mingle camera apply filter for camera and video live",
+  "homepage": "https://github.com/nextc",
+  "license": "MINGLE",
+  "authors": {
+    "Ha Ho": "hoangha052@gmail.com"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "swift_version": "4.0",
+  "source": {
+    "git": "https://github.com/nextc/camera-ios.git",
+    "tag": "0.0.1"
+  },
+  "source_files": "Camera/MGCamera/**/*.{swift}",
+  "exclude_files": "Classes/Exclude",
+  "resources": "Camera/MGCamera/**.{png,jpeg,jpg,storyboard,xib,xcassets,bundle}",
+  "frameworks": "UIKit",
+  "requires_arc": true,
+  "dependencies": {
+    "GPUImage": [
+      "0.1.7"
+    ]
+  }
+}

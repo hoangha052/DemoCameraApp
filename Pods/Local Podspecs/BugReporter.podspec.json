@@ -1,0 +1,39 @@
+{
+  "name": "BugReporter",
+  "version": "2.4.1",
+  "summary": "Report tool",
+  "homepage": "https://github.com/nextc",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": "Mingle",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/nextc/bug-reporter.git",
+    "tag": "2.4.1"
+  },
+  "source_files": "BugReporter/Classes/**/*.{swift}",
+  "resources": "BugReporter/Classes/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}",
+  "frameworks": "UIKit",
+  "requires_arc": true,
+  "dependencies": {
+    "SwiftyJSON": [
+      "3.1.4"
+    ],
+    "AsyncSwift": [
+      "2.0.4"
+    ],
+    "PKHUD": [
+      "5.0.0"
+    ],
+    "Timepiece": [
+      "1.3.1"
+    ],
+    "IQKeyboardManagerSwift": [
+      "5.0.6"
+    ]
+  }
+}
