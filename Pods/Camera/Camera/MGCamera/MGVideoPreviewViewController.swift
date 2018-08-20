@@ -50,7 +50,7 @@ class MGVideoPreviewViewController: UIViewController {
     }()
     
     static var instantiateViewController: MGVideoPreviewViewController {
-        return MGVideoPreviewViewController(nibName: "MGVideoPreviewViewController", bundle: nil)
+        return MGVideoPreviewViewController(nibName: "MGVideoPreviewViewController", bundle: Bundle(for: self))
     }
     
     override func viewDidLoad() {

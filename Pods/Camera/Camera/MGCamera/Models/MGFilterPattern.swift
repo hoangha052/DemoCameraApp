@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+internal func imageFromBundle(_ named: String) -> UIImage {
+    return UIImage(named: named, in: Bundle(for: MGFilterPattern.self), compatibleWith: nil) ?? UIImage()
+}
+
 final class MGFilterPattern {
     let patternImage: UIImage?
 
@@ -24,7 +28,7 @@ final class MGFilterPattern {
             return
         }
         
-        applyFilter(image: UIImage(named: "thumb")!) { [weak self] (image) in
+        applyFilter(image: imageFromBundle("thumb")) { [weak self] (image) in
             self?.thumbnailImage = image
             completion(image)
         }

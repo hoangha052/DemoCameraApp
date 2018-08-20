@@ -24,7 +24,7 @@ class MGPhotoReviewViewController: UIViewController {
     var imagePhoto: UIImage!
     var selectedIndexPath: IndexPath!
     static var instantiateViewController: MGPhotoReviewViewController {
-        return MGPhotoReviewViewController(nibName: "MGPhotoReviewViewController", bundle: nil)
+        return MGPhotoReviewViewController(nibName: "MGPhotoReviewViewController", bundle: Bundle(for: self))
     }
     
     override func viewDidLoad() {
@@ -55,9 +55,8 @@ class MGPhotoReviewViewController: UIViewController {
     }
     
     private func setupFiltersView() {
-        collectionView.register(UINib(nibName: String(describing: MGFilterCell.self), bundle: nil), forCellWithReuseIdentifier: String(describing: MGFilterCell.self))
-        toggleFilterView(isHidden: true, animated: false)
-        self.collectionView.reloadData()
+        collectionView.setupFiltersView()
+        collectionView.collectionViewDelegate = self
         self.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
     }
     

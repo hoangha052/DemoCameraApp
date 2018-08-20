@@ -21,8 +21,11 @@ final class FilterManager {
     private static func getFilterData() -> [MGFilterPattern] {
         var patternData = [MGFilterPattern(patternImage: nil)]
         let fileManager = FileManager.default
-        let bundleURL = Bundle.main.bundleURL
-        let assetURL = bundleURL.appendingPathComponent("FilterPatternImages.bundle")
+        let bundle = Bundle(for: self)
+        guard let assetURL =  bundle.url(forResource: "FilterPatternImages", withExtension: "bundle") else {
+            print("get URL filter image fail")
+            return patternData
+        }
         do {
             var contents = try fileManager.contentsOfDirectory(at: assetURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
             contents.sort { $0.lastPathComponent < $1.lastPathComponent

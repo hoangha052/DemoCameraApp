@@ -6,7 +6,6 @@ target 'DemoCameraApp' do
   use_frameworks!
 
   # Pods for DemoCameraApp
-pod 'Camera', :git => 'https://github.com/nextc/camera-ios.git', :branch => 'dev_changeGPUFramework'
-pod 'BugReporter', :git => 'https://github.com/nextc/bug-reporter.git', :tag => '2.4.1'
+  pod 'Camera', :git => 'https://github.com/nextc/camera-ios.git', :branch => 'dev_camera_mode'
 
 end

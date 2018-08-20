@@ -14,16 +14,17 @@ class LibraryPhotoViewController: UIViewController {
     @IBOutlet weak var imageCollectionView: UICollectionView!
     private var imagesAsset = [PHAsset]()
     private let cellWidth = (UIScreen.main.bounds.width - 6) / 4
+    var cameraMode: CameraMode = .normal
     
     static var libraryPhotoViewController: LibraryPhotoViewController {
-        return LibraryPhotoViewController(nibName: "LibraryPhotoViewController", bundle: nil)
+        return LibraryPhotoViewController(nibName: "LibraryPhotoViewController", bundle: Bundle(for: self))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        imageCollectionView.register(UINib(nibName: String(describing: PhotoCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: String(describing: PhotoCollectionViewCell.self))
+        imageCollectionView.register(UINib(nibName: String(describing: PhotoCollectionViewCell.self), bundle: Bundle(for: PhotoCollectionViewCell.self)), forCellWithReuseIdentifier: String(describing: PhotoCollectionViewCell.self))
         requestAuthorizationGetData()
     }
     
@@ -47,7 +48,16 @@ class LibraryPhotoViewController: UIViewController {
 
     private func getAllImages() {
         let allVidOptions = PHFetchOptions()
-        allVidOptions.predicate = NSPredicate(format: "mediaType = %d || mediaType = %d", PHAssetMediaType.video.rawValue, PHAssetMediaType.image.rawValue)
+        var predecate: NSPredicate
+        switch cameraMode {
+        case .normal:
+            predecate = NSPredicate(format: "mediaType = %d || mediaType = %d", PHAssetMediaType.video.rawValue, PHAssetMediaType.image.rawValue)
+        case .photo:
+            predecate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        case .video:
+            predecate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.video.rawValue)
+        }
+        allVidOptions.predicate = predecate
         allVidOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let assetResult = PHAsset.fetchAssets(with: allVidOptions)
         assetResult.enumerateObjects { (asset, count, stop) in
@@ -62,6 +72,7 @@ class LibraryPhotoViewController: UIViewController {
         let vc = MGPhotoReviewViewController.instantiateViewController
         vc.imagePhoto = UIImage.convertImageFromAsset(asset: imageAsset, size: PHImageManagerMaximumSize)
         vc.cameraController = self.navigationController?.viewControllers[0] as? MGCameraViewController
+        vc.selectedIndexPath = IndexPath(row: 0, section: 0)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

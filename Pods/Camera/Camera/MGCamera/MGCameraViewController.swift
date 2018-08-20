@@ -17,6 +17,12 @@ public protocol MGCameraViewControllerDelegate: class {
     func cameraController(cameraController: MGCameraViewController, didSelectVideo videoURL: URL)
 }
 
+public enum CameraMode {
+    case photo
+    case video
+    case normal
+}
+
 enum CameraState {
     case photo
     case video
@@ -25,6 +31,7 @@ enum CameraState {
 
 public final class MGCameraViewController: UIViewController {
     public weak var delegate: MGCameraViewControllerDelegate?
+    public var cameraMode: CameraMode = .normal
     
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet private weak var recordButton: UIButton!
@@ -36,7 +43,6 @@ public final class MGCameraViewController: UIViewController {
     @IBOutlet weak var libraryPhotoButton: UIButton!
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var bottomBarView: UIView!
-    
     @IBOutlet weak var centerPhotoButtonConstraint: NSLayoutConstraint!
     @IBOutlet private weak var previewImageView: UIImageView!
     @IBOutlet private weak var filterViewBottomConstraint: NSLayoutConstraint!
@@ -92,8 +98,9 @@ public final class MGCameraViewController: UIViewController {
     
     @IBAction private func galleryButtonTapped(_ sender: UIButton) {
         // open gallery images
-        let galleryPhotoVC = LibraryPhotoViewController.libraryPhotoViewController
-        self.navigationController?.pushViewController(galleryPhotoVC, animated: true)
+        let libraryPhotoVC = LibraryPhotoViewController.libraryPhotoViewController
+        libraryPhotoVC.cameraMode = self.cameraMode
+        self.navigationController?.pushViewController(libraryPhotoVC, animated: true)
         
     }
     
@@ -106,7 +113,7 @@ public final class MGCameraViewController: UIViewController {
             self.videoButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
             self.videoButton.setTitleColor(self.labelColor, for: .normal)
         }) { (bool) in
-            self.recordButton.setImage(UIImage(named: "ic_camera"), for: .normal)
+            self.recordButton.setImage( imageFromBundle("ic_camera"), for: .normal)
             self.cameraState = .photo
         }
     }
@@ -120,7 +127,7 @@ public final class MGCameraViewController: UIViewController {
             self.photoButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
             self.photoButton.setTitleColor(self.labelColor, for: .normal)
         }){ (bool) in
-            self.recordButton.setImage(UIImage(named: "ic_video"), for: .normal)
+            self.recordButton.setImage(imageFromBundle("ic_video"), for: .normal)
             self.cameraState = .video
         }
     }
@@ -143,7 +150,7 @@ public final class MGCameraViewController: UIViewController {
         case .video:
             self.startRecordingVideo()
             self.cameraState = .recording
-            self.recordButton.setImage(UIImage(named: "ic_recording"), for: .normal)
+            self.recordButton.setImage(imageFromBundle("ic_recording"), for: .normal)
         case .recording:
             self.stopRecordingVideo()
         }
@@ -172,14 +179,26 @@ public final class MGCameraViewController: UIViewController {
     }
     
     private func resetUI() {
-        photoButton.isHidden = false
-        videoButton.isHidden = false
+        switch cameraMode {
+        case .photo:
+            photoButton.isHidden = true
+            videoButton.isHidden = true
+            self.photoButtonTapped(UIButton())
+        case .video:
+            photoButton.isHidden = true
+            videoButton.isHidden = true
+            videoButtonTapped(UIButton())
+        case .normal:
+            photoButton.isHidden = false
+            videoButton.isHidden = false
+        }
         filterButton.isHidden = false
         libraryPhotoButton.isHidden = false
         isRecording = false
         timeDuration = 0
         timerLabel.isHidden = true
-        self.photoButtonTapped(UIButton())
+        
+        
     }
 }
 
@@ -336,13 +355,6 @@ extension MGCameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate, 
 // MARK: - Filters
 extension MGCameraViewController {
     private func setupFiltersView() {
-        if self == nil {
-            print("nil controller")
-        }
-        
-        if self.collectionView == nil {
-            print("collection nil")
-        }
         self.collectionView.setupFiltersView()
         toggleFilterView(isHidden: true, animated: false)
     }

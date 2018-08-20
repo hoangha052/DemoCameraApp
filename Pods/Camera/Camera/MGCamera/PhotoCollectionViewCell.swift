@@ -14,11 +14,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var videoTimeLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
     func showImagePhoto(asset: PHAsset) {
         videoView.isHidden = (asset.mediaType == .image)

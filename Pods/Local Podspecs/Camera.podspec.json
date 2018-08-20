@@ -17,10 +17,8 @@
     "tag": "0.0.1"
   },
   "source_files": "Camera/MGCamera/**/*.{swift}",
-  "exclude_files": "Classes/Exclude",
-  "resources": "Camera/MGCamera/**.{png,jpeg,jpg,storyboard,xib,xcassets,bundle}",
+  "resources": "Camera/MGCamera/Resources/*.{xib,xcassets,bundle}",
   "frameworks": "UIKit",
-  "requires_arc": true,
   "dependencies": {
     "GPUImage": [
       "0.1.7"
